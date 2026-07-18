@@ -1,0 +1,40 @@
+#include <fcntl.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
+#define COUNT 10000
+
+
+int
+main (int argc, char *argv[])
+{
+	if(argc != 3){
+exit(-4);
+	}
+  char buf[COUNT];
+  int fd = open (argv[1], O_RDONLY);
+  if (fd < 0)
+    {
+      exit (-1);
+    }
+  int fd2 = open (argv[2], O_WRONLY | O_CREAT, 0644);
+  if (fd2 < 0)
+    {
+      exit (-2);
+    }
+  int numread;
+  while ((numread = read (fd, buf, COUNT)) > 0)
+    {
+      if (write (fd2, buf, numread)<0)
+	{
+	  exit (-3);
+	}
+
+    }
+  close(fd);
+  close(fd2);
+  return 0;
+
+
+
+}
